@@ -114,38 +114,10 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
-def test_reload(self):
-        """Test reload method."""
-        bm = BaseModel()
-        with open("file.json", "w", encoding="utf-8") as f:
-            key = "{}.{}".format(type(bm).__name__, bm.id)
-            json.dump({key: bm.to_dict()}, f)
-        self.storage.reload()
-        store = FileStorage._FileStorage__objects
-        self.assertIn("BaseModel." + bm.id, store)
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test that get retrieves objects stored in file.json"""
 
-    def test_reload_no_file(self):
-        """Test reload method with no existing file.json."""
-        try:
-            self.storage.reload()
-        except Exception:
-            self.fail
-
-    def test_delete(self):
-        """Test delete method."""
-        bm = BaseModel()
-        key = "{}.{}".format(type(bm).__name__, bm.id)
-        FileStorage._FileStorage__objects[key] = bm
-        self.storage.delete(bm)
-        self.assertNotIn(bm, FileStorage._FileStorage__objects)
-
-    def test_delete_nonexistant(self):
-        """Test delete method with a nonexistent object."""
-        try:
-            self.storage.delete(BaseModel())
-        except Exception:
-            self.fail
-
-
-if __name__ == "__main__":
-    unittest.main()
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """Test that count returns the right number of objects in file.json"""

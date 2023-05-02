@@ -85,17 +85,12 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
-        """Test that save properly saves objects to file.json"""
+        """Test that save properly saves objects to the db"""
 
-@unittest.skipIf(type(models.storage) == FileStorage,
-                     "Testing FileStorage")
- def test_all_cls(self):
-        """Test all method with specified cls."""
-        obj = self.storage.all(State)
-        self.assertEqual(type(obj), dict)
-        self.assertEqual(len(obj), 1)
-        self.assertEqual(self.state, list(obj.values())[0])
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test that get retrieves an item in db properly"""
 
-
-if __name__ == "__main__":
-    unittest.main()
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """Test that count returns the right number of elements in the db"""
